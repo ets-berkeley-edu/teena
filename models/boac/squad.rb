@@ -40,7 +40,6 @@ class Squad < Team
       MTE = new({code: 'MTE', name: 'Men\'s Tennis', parent_team: Team::TNM}),
       MTE_AA = new({code: 'MTE-AA', name: 'Men\'s Tennis (AA)', parent_team: Team::TNM}),
       MTR = new({code: 'MTR', name: 'Men\'s TrackCC - Other', parent_team: Team::TOM}),
-      MTR_AA = new({code: 'MTR-AA', name: 'Men\'s TrackCC - Other', parent_team: Team::TOM}),
       MTR_DC = new({code: 'MTR-DC', name: 'Men\'s TrackCC, Distance CC', parent_team: Team::TOM}),
       MTR_JP = new({code: 'MTR-JP', name: 'Men\'s TrackCC, Jumps', parent_team: Team::TOM}),
       MTR_MD = new({code: 'MTR-MD', name: 'Men\'s TrackCC, Middle Dist', parent_team: Team::TOM}),

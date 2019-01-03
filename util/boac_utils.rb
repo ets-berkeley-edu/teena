@@ -174,7 +174,7 @@ class BOACUtils < Utils
   def self.set_filtered_cohort_id(cohort)
     query = "SELECT id
              FROM cohort_filters
-             WHERE name = '#{cohort.name}'"
+             WHERE name = '#{cohort.name}';"
     result = Utils.query_pg_db_field(boac_db_credentials, query, 'id').first
     logger.info "Filtered cohort '#{cohort.name}' ID is #{result}"
     cohort.id = result

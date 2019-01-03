@@ -296,7 +296,7 @@ describe 'BOAC' do
         BOACUtils.log_error_and_screenshot(@driver, e, "#{student.uid}")
         it("encountered an error for UID #{student.uid}") { fail }
       ensure
-        if analytics_api_sis_data
+        if student_page_sis_data
           row = [student.uid, student.sports, student_page_sis_data[:name], student_page_sis_data[:preferred_name], student_page_sis_data[:email],
                  student_page_sis_data[:phone], student_page_sis_data[:cumulative_units], student_page_sis_data[:cumulative_gpa], student_page_sis_data[:level],
                  student_page_sis_data[:colleges] && student_page_sis_data[:colleges] * '; ', student_page_sis_data[:majors] && student_page_sis_data[:majors] * '; ',
