@@ -10,7 +10,7 @@ describe 'BOAC' do
   test_config.max_cohort_members.keep_if &:active_asc if test_config.dept == BOACDepartments::ASC
 
   before(:all) do
-    @driver = Utils.launch_browser
+    @driver = Utils.launch_browser test_config.chrome_profile
     @homepage = BOACHomePage.new @driver
     @search_page = BOACSearchResultsPage.new @driver
     @student_page = BOACStudentPage.new @driver

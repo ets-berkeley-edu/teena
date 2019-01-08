@@ -16,7 +16,7 @@ describe 'BOAC' do
     user_course_data_heading = %w(UID Sport Term CourseCode CourseName SectionCcn SectionCode Primary? Midpoint Grade GradingBasis Units EnrollmentStatus)
     user_course_sis_data = Utils.create_test_output_csv('boac-sis-courses.csv', user_course_data_heading)
 
-    @driver = Utils.launch_browser
+    @driver = Utils.launch_browser test.chrome_profile
     @boac_homepage = BOACHomePage.new @driver
     @boac_teams_list_page = BOACTeamsListPage.new @driver
     @boac_cohort_page = BOACFilteredCohortPage.new @driver

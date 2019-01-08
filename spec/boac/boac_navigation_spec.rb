@@ -10,7 +10,7 @@ describe 'BOAC' do
     test.navigation NessieUtils.get_all_students
     pages_tested = []
 
-    @driver = Utils.launch_browser
+    @driver = Utils.launch_browser test.chrome_profile
     @homepage = BOACHomePage.new @driver
     @class_list_page = BOACClassListViewPage.new @driver
     @class_matrix_page = BOACClassMatrixViewPage.new @driver

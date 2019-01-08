@@ -195,4 +195,12 @@ class BOACTestConfig < TestConfig
     set_max_cohort_members CONFIG['user_search_max_users']
   end
 
+  # Uses the secondary Chrome profile if config set to true
+  def chrome_profile
+    if Utils.use_optional_chrome_profile?
+      logger.warn 'Using the secondary Chrome profile'
+      Utils.optional_chrome_profile_dir
+    end
+  end
+
 end

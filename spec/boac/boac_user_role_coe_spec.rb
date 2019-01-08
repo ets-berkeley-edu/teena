@@ -19,7 +19,7 @@ describe 'A CoE advisor using BOAC' do
   coe_everyone_filters = BOACUtils.get_everyone_filtered_cohorts test_coe.dept
 
   before(:all) do
-    @driver = Utils.launch_browser
+    @driver = Utils.launch_browser test_asc.chrome_profile
     @admin_page = BOACAdminPage.new @driver
     @api_admin_page = BOACApiAdminPage.new @driver
     @api_section_page = BOACApiSectionPage.new @driver

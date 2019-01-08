@@ -26,7 +26,7 @@ describe 'BOAC' do
   pre_existing_groups = BOACUtils.get_user_curated_groups test.advisor
 
   before(:all) do
-    @driver = Utils.launch_browser
+    @driver = Utils.launch_browser test.chrome_profile
     @analytics_page = BOACApiUserAnalyticsPage.new @driver
     @homepage = BOACHomePage.new @driver
     @curated_page = BOACCuratedGroupPage.new @driver
@@ -189,7 +189,8 @@ describe 'BOAC' do
     end
 
     it 'can be added on class page list view using individual selections' do
-      @class_page.load_page(@analytics_page.term_id(@term), @analytics_page.course_section_ccns(@course).first)
+      @student_page.load_page test_student
+      @student_page.click_class_page_link(@analytics_page.term_id(@term), @analytics_page.course_section_ccns(@course).first)
       @class_page.selector_add_students_to_group([test_student], group_6)
     end
 

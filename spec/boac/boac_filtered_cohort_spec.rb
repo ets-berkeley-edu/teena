@@ -11,7 +11,7 @@ describe 'BOAC', order: :defined do
   searchable_students = NessieUtils.applicable_user_search_data(all_students, test)
 
   before(:all) do
-    @driver = Utils.launch_browser
+    @driver = Utils.launch_browser test.chrome_profile
     @analytics_page = BOACApiUserAnalyticsPage.new @driver
     @homepage = BOACHomePage.new @driver
     @cohort_page = BOACFilteredCohortPage.new @driver

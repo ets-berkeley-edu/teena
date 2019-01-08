@@ -14,7 +14,7 @@ describe 'An admin using BOAC' do
   everyone_cohorts = BOACUtils.get_everyone_filtered_cohorts
 
   before(:all) do
-    @driver = Utils.launch_browser
+    @driver = Utils.launch_browser test.chrome_profile
     @api_admin_page = BOACApiAdminPage.new @driver
     @api_section_page = BOACApiSectionPage.new @driver
     @api_user_analytics_page = BOACApiUserAnalyticsPage.new @driver

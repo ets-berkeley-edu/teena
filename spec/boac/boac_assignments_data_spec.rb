@@ -23,7 +23,7 @@ describe 'BOAC assignment analytics' do
       user_course_assigns_heading = %w(UID CanvasID Site AssignmentID URL DueDate Submission SubmitDate Type OnTime)
       user_course_assigns = Utils.create_test_output_csv('boac-assignments.csv', user_course_assigns_heading)
 
-      @driver = Utils.launch_browser
+      @driver = Utils.launch_browser test.chrome_profile
       @cal_net = Page::CalNetPage.new @driver
       @canvas_assignments_page = Page::CanvasAssignmentsPage.new @driver
       @canvas_discussions_page = Page::CanvasAnnounceDiscussPage.new @driver
@@ -52,7 +52,7 @@ describe 'BOAC assignment analytics' do
             if courses.any?
               courses.each do |course|
                 course_sites = boac_api_page.course_sites course
-                term_sites << course_sites.map { |s| {:data => s} }
+                term_sites << course_sites.map { |s| {:data => s, :index => course_sites.index(s)} }
               end
             end
 
@@ -141,8 +141,8 @@ describe 'BOAC assignment analytics' do
                   @boac_student_page.click_view_previous_semesters if test.term != BOACUtils.term
 
                   # Find the site in the UI differently if it's matched versus unmatched
-                  site[:course_code] ?
-                      (analytics_xpath = @boac_student_page.course_site_xpath(test.term, site[:course_code], site[:index])) :
+                  site_code ?
+                      (analytics_xpath = @boac_student_page.course_site_xpath(test.term, site_code, site[:index])) :
                       (analytics_xpath = @boac_student_page.unmatched_site_xpath(test.term, site_code))
 
                   [boac_api_assigns_submitted, boac_api_grades].each do |analytics|

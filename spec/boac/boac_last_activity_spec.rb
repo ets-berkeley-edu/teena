@@ -25,7 +25,7 @@ describe 'BOAC' do
 
       caliper_error_csv = Utils.create_test_output_csv('caliper-errors.csv', %w(SiteId CanvasId UID CanvasLastActivity CaliperLastActivity DiffSeconds P/F))
 
-      @driver = Utils.launch_browser
+      @driver = Utils.launch_browser test.chrome_profile
       @homepage = BOACHomePage.new @driver
       @cal_net_page = Page::CalNetPage.new @driver
       @canvas_page = Page::CanvasPage.new @driver
@@ -271,6 +271,7 @@ describe 'BOAC' do
                               course_site = all_sites_data.find { |course_site| course_site[:site_id] == student_site[:site_id]}
                               (course_site[:last_activity_dates].compact.length.to_f / course_site[:student_count].to_f > 0.8)
                             end
+                            logger.debug "Active sites are #{active_student_sites}"
 
                             # Get the sites that could trigger an alert
                             infrequent_alert_triggers = active_student_sites.select { |site| site[:infrequent_activity_alert] }

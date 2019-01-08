@@ -20,7 +20,7 @@ describe 'An ASC advisor' do
   coe_only_students = test_coe.dept_students - overlap_students
 
   before(:all) do
-    @driver = Utils.launch_browser
+    @driver = Utils.launch_browser test_asc.chrome_profile
     @admin_page = BOACAdminPage.new @driver
     @api_admin_page = BOACApiAdminPage.new @driver
     @api_section_page = BOACApiSectionPage.new @driver

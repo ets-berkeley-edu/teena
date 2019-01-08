@@ -43,6 +43,7 @@ class BOACStudentPage
     logger.info "Loading student page for UID #{user.uid}"
     navigate_to "#{BOACUtils.base_url}/student/#{user.uid}"
     wait_for_spinner
+    wait_for_title user.full_name
   end
 
   # Returns the IDs of non-dismissed alerts
@@ -186,7 +187,7 @@ class BOACStudentPage
   # @param course_code [String]
   # @return [String]
   def course_data_xpath(term_name, course_code)
-    "//h3[text()=\"#{term_name}\"]/following-sibling::*[name()='uib-accordion']//h4[text()=\"#{course_code}\"]/ancestor::div[@data-ng-repeat=\"course in term.enrollments\"]"
+    "//h3[text()=\"#{term_name}\"]/following-sibling::*[name()='uib-accordion']//h5[contains(.,\"#{course_code}\")]/ancestor::div[@data-ng-repeat=\"course in term.enrollments\"]"
   end
 
   # Returns the class page link for a given section
@@ -325,6 +326,7 @@ class BOACStudentPage
   # @param label [String]
   # @return [boolean]
   def no_data?(site_xpath, label)
+    logger.debug "Checking for cell at XPath '#{site_analytics_score_xpath(site_xpath, label)}[contains(.,'No Data')]'"
     cell_element(:xpath => "#{site_analytics_score_xpath(site_xpath, label)}[contains(.,'No Data')]").exists?
   end
 

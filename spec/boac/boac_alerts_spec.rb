@@ -10,7 +10,8 @@ describe 'A BOAC alert' do
 
     if @alert
 
-      @driver = Utils.launch_browser
+      test = BOACTestConfig.new
+      @driver = Utils.launch_browser test.chrome_profile
       logger.debug "Picking an advisor whose UID is not #{Utils.super_admin_uid}"
       @advisor = BOACUtils.get_admin_users.find { |u| u.uid.to_s != Utils.super_admin_uid.to_s }
       logger.debug "Advisor UID is #{@advisor.uid}"

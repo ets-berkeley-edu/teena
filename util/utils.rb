@@ -84,6 +84,10 @@ class Utils
     driver
   end
 
+  def self.use_optional_chrome_profile?
+    @config['webdriver']['chrome_optional_profile']
+  end
+
   def self.optional_chrome_profile_dir
     File.join(@config_dir, 'chrome-profile-optional')
   end

@@ -6,6 +6,7 @@ webdriver:
   browser: chrome
   headless: false
   chrome_profile: true
+  chrome_optional_profile: false
   firefox_profile: profile
 
 timeouts:

@@ -17,7 +17,7 @@ describe 'BOAC' do
     students_sis_csv = Utils.create_test_output_csv('boac-class-page-student-sis.csv', %w(Term Course SID Level Majors Sports MidPoint Basis Grade))
     students_canvas_csv = Utils.create_test_output_csv('boac-class-page-student-canvas.csv', %w(Term Course SID SiteId SiteCode SubmittedUser SubmittedMax ScoreUser ScoreMax))
 
-    @driver = Utils.launch_browser
+    @driver = Utils.launch_browser test.chrome_profile
     @homepage = BOACHomePage.new @driver
     @filtered_cohort_page = BOACFilteredCohortPage.new @driver
     @student_page = BOACStudentPage.new @driver
