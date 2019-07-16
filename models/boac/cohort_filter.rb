@@ -10,7 +10,7 @@ class CohortFilter
                 :expected_grad_terms,
                 :last_name,
                 :advisor,
-                :ethnicity,
+                :coe_ethnicity,
                 :coe_gender,
                 :underrepresented_minority,
                 :prep,
@@ -35,7 +35,7 @@ class CohortFilter
 
     # CoE
     @advisor = (test_data['advisors'] && test_data['advisors'].map { |a| a['advisor'] })
-    @ethnicity = (test_data['ethnicities'] && test_data['ethnicities'].map { |e| coe_ethnicity e['ethnicity'] })
+    @coe_ethnicity = (test_data['coe_ethnicities'] && test_data['coe_ethnicities'].map { |e| coe_ethnicity e['coe_ethnicity'] })
     @coe_gender = (test_data['coe_genders'] && test_data['coe_genders'].map { |g| g['coe_gender'] })
     @underrepresented_minority = test_data['minority']
     @prep = (test_data['preps'] && test_data['preps'].map { |p| p['prep'] })
@@ -50,7 +50,7 @@ class CohortFilter
     # Remove filters that are not available to the department
     if [BOACDepartments::ASC, BOACDepartments::PHYSICS].include? dept
       @advisor = nil
-      @ethnicity = nil
+      @coe_ethnicity = nil
       @coe_gender = nil
       @underrepresented_minority = nil
       @prep = nil
@@ -111,7 +111,7 @@ class CohortFilter
       when 'Y'
         'Other Asian'
       else
-        logger.warn "Unrecognized ethnicity '#{code}'" if code && !code.empty? && code != 'Z'
+        logger.warn "Unrecognized COE ethnicity '#{code}'" if code && !code.empty? && code != 'Z'
     end
   end
 

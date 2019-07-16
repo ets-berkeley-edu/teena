@@ -227,7 +227,7 @@ class BOACTestConfig < TestConfig
     if [BOACDepartments::COE, BOACDepartments::ADMIN].include? @dept
       filters.merge!({
                          :advisor => [BOACUtils.get_dept_advisors(BOACDepartments::COE).first.uid.to_s],
-                         :ethnicity => ['Chinese / Chinese-American'],
+                         :coe_ethnicity => ['Chinese / Chinese-American'],
                          :coe_gender => ['Female'],
                          :underrepresented_minority => true,
                          :prep => ['PREP'],

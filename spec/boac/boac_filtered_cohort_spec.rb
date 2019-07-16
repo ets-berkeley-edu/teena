@@ -414,23 +414,23 @@ describe 'BOAC', order: :defined do
       end
     end
 
-    it 'allows the advisor to edit an Ethnicity filter' do
-      if test.default_cohort.search_criteria.ethnicity
-        test.default_cohort.search_criteria.ethnicity = ['Mexican / Mexican-American / Chicano']
-        @cohort_page.edit_filter_and_confirm('Ethnicity', test.default_cohort.search_criteria.ethnicity.first)
+    it 'allows the advisor to edit an \'Ethnicity (COE)\' filter' do
+      if test.default_cohort.search_criteria.coe_ethnicity
+        test.default_cohort.search_criteria.coe_ethnicity = ['Mexican / Mexican-American / Chicano']
+        @cohort_page.edit_filter_and_confirm('Ethnicity (COE)', test.default_cohort.search_criteria.coe_ethnicity.first)
         @cohort_page.verify_filters_present test.default_cohort
       else
-        logger.warn 'Skipping test for editing ethnicity since the filter is not available to the user'
+        logger.warn 'Skipping test for editing \'Ethnicity (COE)\' since the filter is not available to the user'
       end
     end
 
-    it 'allows the advisor to remove an Ethnicity filter' do
-      if test.default_cohort.search_criteria.ethnicity
-        test.default_cohort.search_criteria.ethnicity = []
-        @cohort_page.remove_filter_of_type 'Ethnicity'
+    it 'allows the advisor to remove an \'Ethnicity (COE)\' filter' do
+      if test.default_cohort.search_criteria.coe_ethnicity
+        test.default_cohort.search_criteria.coe_ethnicity = []
+        @cohort_page.remove_filter_of_type 'Ethnicity (COE)'
         @cohort_page.verify_filters_present test.default_cohort
       else
-        logger.warn 'Skipping test for removing ethnicity since the filter is not available to the user'
+        logger.warn 'Skipping test for removing \'Ethnicity (COE)\' since the filter is not available to the user'
       end
     end
 

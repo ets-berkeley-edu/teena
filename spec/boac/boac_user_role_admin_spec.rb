@@ -55,21 +55,21 @@ describe 'An admin using BOAC' do
       @filtered_cohort_page.wait_until(1) { @filtered_cohort_page.new_filter_option_elements.any? &:visible? }
     end
 
-    it('sees a Level filter') { expect(@filtered_cohort_page.new_filter_option('Level').visible?).to be true }
-    it('sees a Major filter') { expect(@filtered_cohort_page.new_filter_option('Major').visible?).to be true }
-    it('sees a Units filter') { expect(@filtered_cohort_page.new_filter_option('Units Completed').visible?).to be true }
-    it('sees a Last Name filter') { expect(@filtered_cohort_page.new_filter_option('Last Name').visible?).to be true }
-    it('sees a Transfer Student filter') { expect(@filtered_cohort_page.new_filter_option('Transfer Student').visible?).to be true }
-    it('sees an Expected Graduation Term filter') { expect(@filtered_cohort_page.new_filter_option('Expected Graduation Term').visible?).to be true }
-    it('sees a Advisor filter') { expect(@filtered_cohort_page.new_filter_option('Advisor').visible?).to be true }
-    it('sees a Ethnicity filter') { expect(@filtered_cohort_page.new_filter_option('Ethnicity').visible?).to be true }
-    it('sees a \'Gender (COE)\' filter') { expect(@filtered_cohort_page.new_filter_option('Gender (COE)').visible?).to be true }
-    it('sees a PREP filter') { expect(@filtered_cohort_page.new_filter_option('PREP').visible?).to be true }
-    it('sees an Inactive COE filter') { expect(@filtered_cohort_page.new_filter_option('Inactive (COE)').visible?).to be true }
-    it('sees a Probation filter') { expect(@filtered_cohort_page.new_filter_option('Probation').visible?).to be true }
-    it('sees an Inactive ASC filter') { expect(@filtered_cohort_page.new_filter_option('Inactive (ASC)').visible?).to be true }
-    it('sees an Intensive filter') { expect(@filtered_cohort_page.new_filter_option('Intensive').visible?).to be true }
-    it('sees a Team filter') { expect(@filtered_cohort_page.new_filter_option('Team').visible?).to be true }
+    it('sees a Level filter') { expect(@filtered_cohort_page.new_filter_option_by_key('levels').visible?).to be true }
+    it('sees a Major filter') { expect(@filtered_cohort_page.new_filter_option_by_key('majors').visible?).to be true }
+    it('sees a Units filter') { expect(@filtered_cohort_page.new_filter_option_by_key('unitRanges').visible?).to be true }
+    it('sees a Last Name filter') { expect(@filtered_cohort_page.new_filter_option_by_key('lastNameRange').visible?).to be true }
+    it('sees a Transfer Student filter') { expect(@filtered_cohort_page.new_filter_option_by_key('transfer').visible?).to be true }
+    it('sees an Expected Graduation Term filter') { expect(@filtered_cohort_page.new_filter_option_by_key('expectedGradTerms').visible?).to be true }
+    it('sees a Advisor filter') { expect(@filtered_cohort_page.new_filter_option_by_key('coeAdvisorLdapUids').visible?).to be true }
+    it('sees a \'Ethnicity (COE)\' filter') { expect(@filtered_cohort_page.new_filter_option_by_key('coeEthnicities').visible?).to be true }
+    it('sees a \'Gender (COE)\' filter') { expect(@filtered_cohort_page.new_filter_option_by_key('coeGenders').visible?).to be true }
+    it('sees a PREP filter') { expect(@filtered_cohort_page.new_filter_option_by_key('coePrepStatuses').visible?).to be true }
+    it('sees an Inactive COE filter') { expect(@filtered_cohort_page.new_filter_option_by_key('isInactiveCoe').visible?).to be true }
+    it('sees a Probation filter') { expect(@filtered_cohort_page.new_filter_option_by_key('coeProbation').visible?).to be true }
+    it('sees an Inactive ASC filter') { expect(@filtered_cohort_page.new_filter_option_by_key('isInactiveAsc').visible?).to be true }
+    it('sees an Intensive filter') { expect(@filtered_cohort_page.new_filter_option_by_key('inIntensiveCohort').visible?).to be true }
+    it('sees a Team filter') { expect(@filtered_cohort_page.new_filter_option_by_key('groupCodes').visible?).to be true }
   end
 
   context 'visiting a class page' do

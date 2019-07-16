@@ -297,7 +297,7 @@ class BOACFilteredCohortPage
         filters.expected_grad_terms.each { |t| existing_filter_element('Expected Graduation Term', t).exists? } if filters.expected_grad_terms && filters.expected_grad_terms.any?
         existing_filter_element('Last Name', filters.last_name).exists? if filters.last_name
         # TODO - advisors
-        filters.ethnicity.each { |e| existing_filter_element('Ethnicity', e).exists? } if filters.ethnicity && filters.ethnicity.any?
+        filters.coe_ethnicity.each { |e| existing_filter_element('Ethnicity (COE)', e).exists? } if filters.coe_ethnicity && filters.coe_ethnicity.any?
         filters.gender.each { |g| existing_filter_element('Gender (COE)', g).exists? } if filters.coe_gender && filters.coe_gender.any?
         existing_filter_element('Underrepresented Minority').exists? if filters.underrepresented_minority
         filters.prep.each { |p| existing_filter_element('PREP', p).exists? } if filters.prep && filters.prep.any?
@@ -400,20 +400,20 @@ class BOACFilteredCohortPage
     end
 
     # Global
-    cohort.search_criteria.gpa.each { |g| select_filter('GPA', g) } if cohort.search_criteria.gpa
-    cohort.search_criteria.level.each { |l| select_filter('Level', l) } if cohort.search_criteria.level
-    cohort.search_criteria.units_completed.each { |u| select_filter('Units Completed', u) } if cohort.search_criteria.units_completed
-    cohort.search_criteria.major.each { |m| select_filter('Major', m) } if cohort.search_criteria.major
+    cohort.search_criteria.gpa.each { |g| select_filter_by_key('gpaRanges', g) } if cohort.search_criteria.gpa
+    cohort.search_criteria.level.each { |l| select_filter_by_key('levels', l) } if cohort.search_criteria.level
+    cohort.search_criteria.units_completed.each { |u| select_filter_by_key('unitRanges', u) } if cohort.search_criteria.units_completed
+    cohort.search_criteria.major.each { |m| select_filter_by_key('majors', m) } if cohort.search_criteria.major
     select_filter 'Transfer Student' if cohort.search_criteria.transfer_student
     cohort.search_criteria.expected_grad_terms.each { |t| select_filter('Expected Graduation Term', t) } if cohort.search_criteria.expected_grad_terms
     select_filter('Last Name', cohort.search_criteria.last_name) if cohort.search_criteria.last_name
 
     # CoE
     cohort.search_criteria.advisor.each { |a| select_filter_by_key('coeAdvisorLdapUids', a) } if cohort.search_criteria.advisor
-    cohort.search_criteria.ethnicity.each { |e| select_filter('Ethnicity', e) } if cohort.search_criteria.ethnicity
+    cohort.search_criteria.coe_ethnicity.each { |e| select_filter_by_key('coeEthnicities', e) } if cohort.search_criteria.coe_ethnicity
     select_filter 'Underrepresented Minority' if cohort.search_criteria.underrepresented_minority
     cohort.search_criteria.coe_gender.each { |g| select_filter_by_key('coeGenders', g) } if cohort.search_criteria.coe_gender
-    cohort.search_criteria.prep.each { |p| select_filter('PREP', p) } if cohort.search_criteria.prep
+    cohort.search_criteria.prep.each { |p| select_filter_by_key('coePrepStatuses', p) } if cohort.search_criteria.prep
     select_filter 'Probation' if cohort.search_criteria.probation_coe
     inactive_label = (test.dept == BOACDepartments::ADMIN) ? 'Inactive (COE)' : 'Inactive'
     select_filter inactive_label if cohort.search_criteria.inactive_coe
@@ -519,16 +519,16 @@ class BOACFilteredCohortPage
     matching_advisor_users = (search_criteria.advisor && search_criteria.advisor.any?) ?
         (test.searchable_data.select { |u| search_criteria.advisor.include? u[:advisor] }) : test.searchable_data
 
-    # Ethnicity
-    matching_ethnicity_users = []
-    if search_criteria.ethnicity && search_criteria.ethnicity.any?
-      search_criteria.ethnicity.each do |ethnicity|
-        matching_ethnicity_users << test.searchable_data.select { |u| search_criteria.coe_ethnicity(u[:ethnicity]) == ethnicity }
+    # Ethnicity (COE)
+    matching_coe_ethnicity_users = []
+    if search_criteria.coe_ethnicity && search_criteria.coe_ethnicity.any?
+      search_criteria.coe_ethnicity.each do |coe_ethnicity|
+        matching_coe_ethnicity_users << test.searchable_data.select { |u| search_criteria.coe_ethnicity(u[:coe_ethnicity]) == coe_ethnicity }
       end
     else
-      matching_ethnicity_users = test.searchable_data
+      matching_coe_ethnicity_users = test.searchable_data
     end
-    matching_ethnicity_users.flatten!
+    matching_coe_ethnicity_users.flatten!
 
     # Underrepresented Minority
     matching_minority_users = search_criteria.underrepresented_minority ? (test.searchable_data.select { |u| u[:underrepresented_minority] }) : test.searchable_data
@@ -583,7 +583,7 @@ class BOACFilteredCohortPage
         test.searchable_data
 
     matches = [matching_gpa_users, matching_level_users, matching_units_users, matching_major_users, matching_tranfer_users,
-               matching_grad_term_users, matching_last_name_users, matching_advisor_users, matching_ethnicity_users, matching_minority_users,
+               matching_grad_term_users, matching_last_name_users, matching_advisor_users, matching_coe_ethnicity_users, matching_minority_users,
                matching_coe_gender_users, matching_preps_users, matching_inactive_coe_users, matching_probation_asc_users,
                matching_inactive_asc_users, matching_intensive_asc_users, matching_squad_users]
     matches.any?(&:empty?) ? [] : matches.inject(:'&')

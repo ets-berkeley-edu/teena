@@ -41,20 +41,20 @@ describe 'A Physics advisor using BOAC' do
       @filtered_cohort_page.wait_until(1) { @filtered_cohort_page.new_filter_option_elements.any? &:visible? }
     end
 
-    it('sees a GPA filter') { expect(@filtered_cohort_page.new_filter_option('GPA').visible?).to be true }
-    it('sees a Level filter') { expect(@filtered_cohort_page.new_filter_option('Level').visible?).to be true }
-    it('sees a Major filter') { expect(@filtered_cohort_page.new_filter_option('Major').visible?).to be true }
-    it('sees a Units filter') { expect(@filtered_cohort_page.new_filter_option('Units Completed').visible?).to be true }
-    it('sees a Transfer Student filter') { expect(@filtered_cohort_page.new_filter_option('Transfer Student').visible?).to be true }
-    it('sees an Expected Graduation Term filter') { expect(@filtered_cohort_page.new_filter_option('Expected Graduation Term').visible?).to be true }
-    it('sees a Last Name filter') { expect(@filtered_cohort_page.new_filter_option('Last Name').visible?).to be true }
-    it('sees no Advisor filter') { expect(@filtered_cohort_page.new_filter_option('Advisor').exists?).to be false }
-    it('sees no Ethnicity filter') { expect(@filtered_cohort_page.new_filter_option('Ethnicity').exists?).to be false }
-    it('sees no \'Gender (COE)\' filter') { expect(@filtered_cohort_page.new_filter_option('Gender (COE)').exists?).to be false }
-    it('sees no PREP filter') { expect(@filtered_cohort_page.new_filter_option('PREP').exists?).to be false }
-    it('sees no Inactive filter') { expect(@filtered_cohort_page.new_filter_option('Inactive').visible?).to be false }
-    it('sees no Intensive filter') { expect(@filtered_cohort_page.new_filter_option('Intensive').visible?).to be false }
-    it('sees no Team filter') { expect(@filtered_cohort_page.new_filter_option('Team').visible?).to be false }
+    it('sees a GPA filter') { expect(@filtered_cohort_page.new_filter_option_by_key('gpaRanges').visible?).to be true }
+    it('sees a Level filter') { expect(@filtered_cohort_page.new_filter_option_by_key('levels').visible?).to be true }
+    it('sees a Major filter') { expect(@filtered_cohort_page.new_filter_option_by_key('majors').visible?).to be true }
+    it('sees a Units filter') { expect(@filtered_cohort_page.new_filter_option_by_key('unitRanges').visible?).to be true }
+    it('sees a Transfer Student filter') { expect(@filtered_cohort_page.new_filter_option_by_key('transfer').visible?).to be true }
+    it('sees an Expected Graduation Term filter') { expect(@filtered_cohort_page.new_filter_option_by_key('expectedGradTerms').visible?).to be true }
+    it('sees a Last Name filter') { expect(@filtered_cohort_page.new_filter_option_by_key('lastNameRange').visible?).to be true }
+    it('sees no Advisor filter') { expect(@filtered_cohort_page.new_filter_option_by_key('coeAdvisorLdapUids').exists?).to be false }
+    it('sees no Ethnicity filter') { expect(@filtered_cohort_page.new_filter_option_by_key('coeEthnicities').exists?).to be false }
+    it('sees no \'Gender (COE)\' filter') { expect(@filtered_cohort_page.new_filter_option_by_key('coeGenders').exists?).to be false }
+    it('sees no PREP filter') { expect(@filtered_cohort_page.new_filter_option_by_key('coePrepStatuses').exists?).to be false }
+    it('sees no Inactive filter') { expect(@filtered_cohort_page.new_filter_option_by_key('isInactiveCoe').visible?).to be false }
+    it('sees no Intensive filter') { expect(@filtered_cohort_page.new_filter_option_by_key('inIntensiveCohort').visible?).to be false }
+    it('sees no Team filter') { expect(@filtered_cohort_page.new_filter_option_by_key('groupCodes').visible?).to be false }
   end
 
   context 'visiting Everyone\'s Cohorts' do
