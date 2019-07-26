@@ -18,6 +18,8 @@ module BOACCohortPages
   button(:confirm_delete_button, id: 'delete-confirm')
   button(:cancel_delete_button, id: 'delete-cancel')
 
+  button(:export_list_button, id: 'export-student-list-button')
+
   span(:no_access_msg, xpath: '//span[text()="You are unauthorized to access student data managed by other departments"]')
   span(:title_required_msg, xpath: '//span[text()="Required"]')
 
@@ -47,6 +49,50 @@ module BOACCohortPages
     wait_for_update_and_click cancel_delete_button_element
     cancel_delete_button_element.when_not_present Utils.short_wait
     wait_until(1) { current_url.include? cohort.id }
+  end
+
+  # Clicks the Export List button and parses the resulting file
+  # @param cohort [Cohort]
+  # @return [Array<Array>]
+  def export_student_list(cohort)
+    logger.info "Exporting student list for #{cohort.instance_of?(FilteredCohort) ? 'cohort' : 'group'} ID '#{cohort.id}'"
+    Utils.prepare_download_dir
+    wait_for_update_and_click export_list_button_element
+    csv_file_path = "#{Utils.download_dir}/#{cohort.name + '-' if cohort.id}students-#{Time.now.strftime('%Y-%m-%d')}_*.csv"
+    wait_until(20) { Dir[csv_file_path].any? }
+    CSV.table Dir[csv_file_path].first
+  end
+
+  # Verifies that the filtered cohort or curated group members in a CSV export match the actual members
+  # @param cohort_members [Array<Object>]
+  # @param parsed_csv [CSV::Table]
+  def verify_student_list_export(cohort_members, parsed_csv)
+    wait_until(1, "Expected #{cohort_members.length}, got #{parsed_csv.length}") { parsed_csv.length == cohort_members.length }
+    # Curated groups contain user objects
+    if cohort_members.all? { |m| m.instance_of? BOACUser }
+      cohort_members.each do |stu|
+        wait_until(1, "Unable to find SID #{stu.sis_id}") do
+          parsed_csv.find do |r|
+            (r.dig(:first_name) == stu.first_name) &&
+                (r.dig(:last_name) == stu.last_name) &&
+                (r.dig(:sid) == stu.sis_id.to_i) &&
+                (!r.dig(:email).empty?)
+          end
+        end
+      end
+    # Filtered cohorts contain user hashes
+    else
+      cohort_members.each do |stu|
+        wait_until(1, "Unable to find SID #{stu[:sid]}") do
+          parsed_csv.find do |r|
+            (r.dig(:first_name) == stu[:first_name]) &&
+                (r.dig(:last_name) == stu[:last_name]) &&
+                (r.dig(:sid) == stu[:sid].to_i) &&
+                (!r.dig(:email).empty?)
+          end
+        end
+      end
+    end
   end
 
   # LIST VIEW - shared by filtered cohorts and curated groups

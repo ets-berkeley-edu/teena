@@ -132,9 +132,16 @@ describe 'BOAC', order: :defined do
         end
       end
 
+      it("offers an Export List button for a search #{cohort.search_criteria.list_filters}") { expect(@cohort_page.export_list_button?).to be true }
+
       it("allows the advisor to create a cohort using #{cohort.search_criteria.list_filters}") { @cohort_page.create_new_cohort cohort }
 
       it("shows the cohort filters for a cohort using #{cohort.search_criteria.list_filters}") { @cohort_page.verify_filters_present cohort }
+
+      it "allows the advisor to export a list of students in a cohort using #{cohort.search_criteria.list_filters}" do
+        parsed_csv = @cohort_page.export_student_list cohort
+        @cohort_page.verify_student_list_export(cohort.member_data, parsed_csv)
+      end
 
       it "shows the filtered cohort on the homepage with criteria #{cohort.search_criteria.list_filters}" do
         @homepage.load_page
