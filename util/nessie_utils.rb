@@ -366,6 +366,7 @@ class NessieUtils < Utils
 
       student_hashes[k] = {
         :sid => k,
+        :entering_term => (sis_profile && sis_profile['matriculation'] && Utils.term_name_to_sis_code(sis_profile['matriculation'])),
         :ethnicity => (demographics && demographics['ethnicities']),
         :expected_grad_term => (expected_grad && expected_grad['id'].to_s),
         :gender => (demographics && demographics['gender']),

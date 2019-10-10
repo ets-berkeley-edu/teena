@@ -408,6 +408,26 @@ class Utils
     end
   end
 
+  # Converts term name to the SIS code for the term
+  # @param term_name [String]
+  # @return [String]
+  def self.term_name_to_sis_code(term_name)
+    split = term_name.split
+    year_code = split[1][0] + split[1][2..3]
+    season_code = case split[0]
+                    when 'Spring'
+                      '2'
+                    when 'Summer'
+                      '5'
+                    when 'Fall'
+                      '8'
+                    else
+                      logger.error "Unknown term season '#{split[0]}'"
+                      fail
+                  end
+    year_code + season_code
+  end
+
   # SCREENSHOTS
 
   def self.save_screenshot(driver, unique_id)

@@ -15,6 +15,21 @@ module BOACFilteredCohortPageResults
 
   ### GLOBAL FILTERS
 
+  # Returns the student hashes that match a set of entering term filters
+  # @param test [BOACTestConfig]
+  # @param search_criteria [CohortFilter]
+  # @return [Array<Hash>]
+  def matching_entering_term_students(test, search_criteria)
+    students = if search_criteria.entering_terms&.any?
+                 test.searchable_data.select do |u|
+                   search_criteria.entering_terms.find { |search_term| search_term == u[:entering_term] }
+                 end
+               else
+                 test.searchable_data
+               end
+    students.flatten
+  end
+
   # Returns the student hashes that match a set of expected graduation term filters
   # @param test [BOACTestConfig]
   # @param search_criteria [CohortFilter]
@@ -314,7 +329,8 @@ module BOACFilteredCohortPageResults
   # @param search_criteria [CohortFilter]
   # @return [Array<Hash>]
   def expected_search_results(test, search_criteria)
-    matches = [matching_grad_term_students(test, search_criteria),
+    matches = [matching_entering_term_students(test, search_criteria),
+               matching_grad_term_students(test, search_criteria),
                matching_gpa_students(test, search_criteria),
                matching_level_students(test, search_criteria),
                matching_major_students(test, search_criteria),

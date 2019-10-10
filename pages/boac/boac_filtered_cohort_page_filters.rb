@@ -43,6 +43,8 @@ module BOACFilteredCohortPageFilters
   # @return [PageObject::Elements::Link]
   def new_filter_sub_option_element(filter_key, filter_option)
     case filter_key
+      when 'enteringTerms'
+        link_element(id: "Entering Term-#{filter_option}")
       when 'expectedGradTerms'
         link_element(id: "Expected Graduation Term-#{filter_option}")
       when 'coeAdvisorLdapUids'
@@ -117,6 +119,7 @@ module BOACFilteredCohortPageFilters
     end
 
     # Global
+    cohort.search_criteria.entering_terms.each { |term| select_new_filter('enteringTerms', term) } if cohort.search_criteria.entering_terms
     cohort.search_criteria.gpa.each { |gpa| select_new_filter('gpaRanges', gpa) } if cohort.search_criteria.gpa
     cohort.search_criteria.level.each { |l| select_new_filter('levels', l) } if cohort.search_criteria.level
     cohort.search_criteria.units_completed.each { |u| select_new_filter('unitRanges', u) } if cohort.search_criteria.units_completed
@@ -210,6 +213,7 @@ module BOACFilteredCohortPageFilters
       filters = cohort.search_criteria
       wait_until(5) do
 
+        filters.entering_terms.each { |term| existing_filter_element('Entering Term', term).exists? } if filters.entering_terms&.any?
         filters.expected_grad_terms.each { |t| existing_filter_element('Expected Graduation Term', t).exists? } if filters.expected_grad_terms&.any?
         filters.gpa.each { |g| existing_filter_element('GPA', g).exists? } if filters.gpa&.any?
         filters.level.each { |l| existing_filter_element('Level', l).exists? } if filters.level&.any?
@@ -222,9 +226,14 @@ module BOACFilteredCohortPageFilters
         filters.gender.each { |g| existing_filter_element('Gender', g).exists? } if filters.gender&.any?
         existing_filter_element('Underrepresented Minority').exists? if filters.underrepresented_minority
 
+        existing_filter_element('Inactive (ASC)').exists? if filters.asc_inactive
+        existing_filter_element('Intensive').exists? if filters.asc_intensive
+        filters.asc_team.each { |t| existing_filter_element('Team', t.name).exists? } if filters.asc_team&.any?
+
         # TODO - advisors COE
         filters.coe_ethnicity.each { |e| existing_filter_element('Ethnicity (COE)', e).exists? } if filters.coe_ethnicity&.any?
         filters.coe_gender.each { |g| existing_filter_element('Gender (COE)', g).exists? } if filters.coe_gender&.any?
+        existing_filter_element('Inactive (COE)').exists? if filters.coe_inactive
 
         filters.last_name.each { |n| existing_filter_element('Last Name', n).exists? } if filters.last_name&.any?
         filters.cohort_owner_academic_plans.each { |g| existing_filter_element('My Students', g).exists? } if filters.cohort_owner_academic_plans&.any?
@@ -232,9 +241,6 @@ module BOACFilteredCohortPageFilters
         existing_filter_element('Underrepresented Minority').exists? if filters.coe_underrepresented_minority
         filters.coe_prep.each { |p| existing_filter_element('PREP', p).exists? } if filters.coe_prep&.any?
         existing_filter_element('Probation').exists? if filters.coe_probation
-        existing_filter_element('Inactive').exists? if filters.asc_inactive
-        existing_filter_element('Intensive').exists? if filters.asc_intensive
-        filters.asc_team.each { |t| existing_filter_element('Team', t.name).exists? } if filters.asc_team&.any?
         true
       end
     else
@@ -273,7 +279,7 @@ module BOACFilteredCohortPageFilters
     # All others require a selection
     else
       wait_for_update_and_click button_element(xpath: "#{existing_filter_sub_options_xpath filter_name}//button")
-      (['Expected Graduation Term', 'Advisor (COE)'].include? filter_name) ?
+      (['Entering Term', 'Expected Graduation Term', 'Advisor (COE)'].include? filter_name) ?
           wait_for_update_and_click(link_element(id: "#{filter_name}-#{edited_filter_option}")) :
           wait_for_update_and_click(link_element(xpath: "#{existing_filter_sub_options_xpath filter_name}//span[text()=\"#{edited_filter_option}\"]/.."))
     end

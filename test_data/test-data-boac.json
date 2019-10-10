@@ -1,6 +1,12 @@
 {
     "filters": [
         {
+            "entering_terms": [
+                {"entering_term": "2138"},
+                {"entering_term": "2148"}
+            ]
+        },
+        {
             "asc_inactive": true,
             "asc_teams": [
                 {"squad": "Men's Crew"},
