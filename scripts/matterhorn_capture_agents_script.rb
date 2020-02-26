@@ -8,13 +8,14 @@ begin
   agents = (JSON.parse File.read(agents_file))['agents']
 
   @driver = Utils.launch_browser
-  @salesforce = Page::SalesforcePage.new @driver
+  @salesforce = SalesforcePage.new @driver
   @salesforce.log_in
 
   agents.each do |agent|
 
     begin
       @salesforce.create_location agent
+      logger.warn "Created agent '#{agent['captureAgent']}'"
     rescue => e
       logger.error "Failed to create agent '#{agent['captureAgent']}'"
       Utils.log_error e
