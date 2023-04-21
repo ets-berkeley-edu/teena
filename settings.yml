@@ -55,7 +55,6 @@ boac:
   group_bulk_sids_max: 200
   notes_batch_curated_group_count: 2
   notes_batch_students_count: 3
-  notes_batch_students_per_group_count: 3
   notes_max_notes: 2
   notes_max_users: 1
   search_max_searches: 2

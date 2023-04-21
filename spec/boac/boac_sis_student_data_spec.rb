@@ -13,6 +13,7 @@ unless ENV['NO_DEPS']
       hold_students = []
       image_nows = []
       calcentrals = []
+      dropses = []
 
       # Create files for test output
       user_profile_data_heading = %w(UID Name PreferredName Email EmailAlt Phone Units GPA Level Transfer Colleges Majors
@@ -873,6 +874,7 @@ unless ENV['NO_DEPS']
 
               drops = student_data[:api].dropped_sections term
               if drops
+                dropses << student_data[:student]
                 drops.each do |drop|
                   visible_drop = @boac_student_page.visible_dropped_section_data(term_id, drop[:title], drop[:component], drop[:number])
                   it "shows dropped section #{drop[:title]} #{drop[:component]} #{drop[:number]} for #{test_case}" do
@@ -945,6 +947,7 @@ unless ENV['NO_DEPS']
     it('has at least one student with a hold') { expect(hold_students).not_to be_empty }
     it('has at least one student with an Image Now link') { expect(image_nows).not_to be_empty }
     it('has at least one student with a CalCentral link') { expect(calcentrals).not_to be_empty }
+    it('has at least one student with dropped sections') { expect(dropses).not_to be_empty }
 
   rescue => e
     Utils.log_error e

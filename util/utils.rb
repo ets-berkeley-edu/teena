@@ -111,7 +111,14 @@ class Utils
   end
 
   def self.headless?
-    @config['webdriver']['headless']
+    case ENV['HEADLESS']
+    when 'true'
+      true
+    when 'false'
+      false
+    else
+      @config['webdriver']['headless']
+    end
   end
 
   # @param driver [Selenium::WebDriver]

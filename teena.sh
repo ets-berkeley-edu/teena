@@ -16,6 +16,27 @@ echo "    export TEENA__TOOL_VERSION=\"3.4\""
 echo "    export TEENA__TEST_SUITE_KEYWORD=\"whiteboard\""
 echo "------------------------"; echo
 
+# ----
+
+echo 'What type of browser should pursue Ichabod Crane? Enter 1 or 2. '
+
+headless_options=("regular" "headless")
+
+select opt in "${headless_options[@]}"; do
+  case ${opt} in
+  "regular")
+    headless=false
+    break
+    ;;
+  "headless")
+    headless=true
+    break
+    ;;
+  esac
+done
+
+# ----
+
 options=("BOA" "Junction" "SuiteC")
 
 tool_being_tested=''
@@ -117,11 +138,11 @@ if [[ -z "${test_suite}" ]]
 then
     echo; echo "Running ALL tests of ${friendly_tool_name} v${version}"
     echo
-    rake VERSION="${summary}" USER="${username}" PASS="${password}" "${tool_being_tested}"
+    rake HEADLESS="${headless}" VERSION="${summary}" USER="${username}" PASS="${password}" "${tool_being_tested}"
 else
     echo; echo "Running '${test_suite}' tests of ${friendly_tool_name} v${version}"
     echo
-    rake SCRIPTS="${test_suite}" VERSION="${summary}" USER="${username}" PASS="${password}" "${tool_being_tested}"
+    rake HEADLESS="${headless}" SCRIPTS="${test_suite}" VERSION="${summary}" USER="${username}" PASS="${password}" "${tool_being_tested}"
 fi
 
 echo
