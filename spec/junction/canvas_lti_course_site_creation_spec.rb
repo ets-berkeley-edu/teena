@@ -19,7 +19,6 @@ describe 'bCourses course site creation' do
     @create_course_site_page = Page::JunctionPages::CanvasCreateCourseSitePage.new @driver
     @canvas_page = Page::CanvasPage.new @driver
     @canvas_assignments_page = Page::CanvasAssignmentsPage.new @driver
-    @roster_photos_page = Page::JunctionPages::CanvasRostersPage.new @driver
     @course_captures_page = Page::JunctionPages::CanvasCourseCapturesPage.new @driver
 
     sites_created = []
@@ -292,18 +291,6 @@ describe 'bCourses course site creation' do
             expect(visible_modes).not_to be_empty
             expect(visible_modes - ['In Person', 'Online', 'Hybrid', 'Flexible', 'Remote', 'Web-based']).to be_empty
           end
-
-          # ROSTER PHOTOS - check that roster photos tool shows the right sections
-
-          has_roster_photos_link = @roster_photos_page.roster_photos_link?
-          it("shows a Roster Photos tool link in course site navigation for #{site[:course].term} #{site[:course].code} site ID #{site[:course].site_id}") { expect(has_roster_photos_link).to be true }
-
-          @roster_photos_page.load_embedded_tool site[:course]
-          @roster_photos_page.wait_for_load_and_click @roster_photos_page.section_select_element
-
-          expected_sections_on_site = (site[:sections_for_site].map { |section| "#{section.course} #{section.label}" })
-          actual_sections_on_site = @roster_photos_page.section_options
-          it("shows the right section list on the Roster Photos tool for #{site[:course].term} #{site[:course].code} site ID #{site[:course].site_id}") { expect(actual_sections_on_site).to eql(expected_sections_on_site.sort) }
 
           # COURSE CAPTURE - check that course captures tool is not added automatically
 

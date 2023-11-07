@@ -18,7 +18,6 @@ describe 'bCourses project site', order: :defined do
     @site_creation_page = Page::JunctionPages::CanvasSiteCreationPage.new @driver
     @create_project_site_page = Page::JunctionPages::CanvasCreateProjectSitePage.new @driver
     @find_person_to_add_page = Page::JunctionPages::CanvasCourseAddUserPage.new @driver
-    @roster_photos_page = Page::JunctionPages::CanvasRostersPage.new @driver
     @official_sections_page = Page::JunctionPages::CanvasCourseManageSectionsPage.new @driver
 
     if standalone
@@ -72,7 +71,6 @@ describe 'bCourses project site', order: :defined do
 
     unless standalone
       it('redirects to a custom project homepage') { @canvas.project_site_heading_element.when_present Utils.short_wait }
-      it('does not add the Roster Photos tool') { expect(@roster_photos_page.roster_photos_link?).to be false }
       it('does not add the Official Sections tool') { expect(@official_sections_page.official_sections_link?).to be false }
     end
   end

@@ -125,11 +125,6 @@ class JunctionUtils < Utils
     Utils.config['canvas']['course_captures_tool']
   end
 
-  # Canvas ID of roster photos tool
-  def self.canvas_rosters_tool
-    Utils.config['canvas']['rosters_tool']
-  end
-
   # Canvas ID of course official sections tool
   def self.canvas_official_sections_tool
     Utils.config['canvas']['official_sections_tool']

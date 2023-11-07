@@ -76,7 +76,6 @@ canvas:
   create_site_tool: secret
   course_add_user_tool: secret
   course_captures_tool: secret
-  rosters_tool: secret
   official_sections_tool: secret
   mailing_lists_tool: secret
   mailing_list_tool: secret
