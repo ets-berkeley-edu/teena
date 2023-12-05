@@ -129,59 +129,24 @@ module CanvasPeoplePage
     activate_user_and_reset_email users_missing
 
     # Add users by role
-    ['Teacher', 'Designer', 'Lead TA', 'TA', 'Observer', 'Reader', 'Student', 'Owner', 'Maintainer', 'Member'].each do |user_role|
-      users = ''
-      users_with_role = users_missing.select { |user| user.role == user_role }
-      users_with_role.each { |user| users << "#{user.uid}, " }
-      unless users.empty?
-        begin
-          # Canvas add-user function is often flaky in test envs, so retry if it fails
-          tries ||= 3
-          logger.info "Adding users with role #{user_role}"
-          load_users_page course
-          wait_for_load_and_click add_people_button_element
-          wait_for_update_and_click add_user_by_uid_element
-          wait_for_element_and_type_js(user_list_element, users)
-          wait_for_update_and_click user_role_element
-          js_click(user_role_option_elements.find { |el| el.text == user_role })
-          wait_for_element_and_select(user_section_element, section.sis_id) if section
-          wait_for_update_and_click next_button_element
-          users_ready_to_add_msg_element.when_visible Utils.medium_wait
-          hide_canvas_footer_and_popup
-          wait_for_update_and_click next_button_element
-          users_with_role.each { |u| wait_for_added_user u }
-        rescue => e
-          logger.error "#{e.message}\n#{e.backtrace}"
-          logger.warn 'Add User failed, retrying'
-          (tries -= 1).zero? ? fail : retry
-        end
-      end
+    add_user_page = Page::JunctionPages::CanvasCourseAddUserPage.new @driver
+    add_user_page.load_embedded_tool course
+    users_missing.each do |user|
+      logger.info "Adding UID #{user.uid} with role #{user.role}"
+      add_user_page.search(user.uid, 'CalNet UID')
+      add_user_page.add_user_by_uid user
     end
   end
 
   def add_users_by_section(course, users)
     load_users_page course
+    add_user_page = Page::JunctionPages::CanvasCourseAddUserPage.new @driver
+    add_user_page.load_embedded_tool course
     users.each do |user|
       user.sections.each do |section|
-        begin
-          tries ||= 3
-          logger.info "Adding UID #{user.uid} to section #{section.sis_id}"
-          wait_for_load_and_click add_people_button_element
-          wait_for_update_and_click add_user_by_uid_element
-          wait_for_element_and_type_js(user_list_element, user.uid)
-          wait_for_update_and_click user_role_element
-          wait_for_update_and_click(user_role_option_elements.find { |el| el.text == user.role })
-          wait_for_update_and_click user_section_element
-          wait_for_update_and_click(user_role_option_elements.find { |el| el.text == section.sis_id })
-          wait_for_update_and_click next_button_element
-          users_ready_to_add_msg_element.when_visible Utils.medium_wait
-          wait_for_update_and_click next_button_element
-          wait_for_users [user]
-        rescue => e
-          logger.error "#{e.message}"
-          logger.warn 'Add User failed, retrying'
-          (tries -= 1).zero? ? fail : retry
-        end
+        logger.info "Adding UID #{user.uid} with role #{user.role}"
+        add_user_page.search(user.uid, 'CalNet UID')
+        add_user_page.add_user_by_uid(user, section)
       end
     end
   end
