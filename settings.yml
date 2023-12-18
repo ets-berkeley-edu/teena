@@ -5,8 +5,7 @@ logger_level: Logger::INFO
 webdriver:
   browser: chrome
   headless: false
-  chrome_profile: true
-  chrome_optional_profile: false
+  chrome_binary_path: '/Applications/Google Chrome for Testing.app'
 
 timeouts:
   click_wait: 0.5

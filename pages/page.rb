@@ -21,7 +21,7 @@ module Page
     end
   end
 
-  iframe(:canvas_iframe, id: 'tool_content')
+  iframe(:canvas_iframe, xpath: '//iframe[starts-with(@id, "tool_content")]')
 
   def switch_to_frame(id)
     iframe_element(id: id).when_present Utils.short_wait
@@ -66,7 +66,8 @@ module Page
       wait_until(Utils.short_wait, "'#{url}' is not present") { i_frame_form_element? url }
       logger.warn "Found expected iframe base URL #{url}"
     end
-    switch_to_frame 'tool_content'
+    id = canvas_iframe_element.attribute('id')
+    switch_to_frame id
   end
 
   # Whether or not an iframe containing a given URL exists

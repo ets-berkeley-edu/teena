@@ -51,18 +51,13 @@ class Utils
   def self.launch_browser(profile = nil, driver = nil)
     driver_config = @config['webdriver']
     browser = driver || driver_config['browser']
-    logger.info "Launching #{browser.capitalize}#{(' using profile at ' + profile) if profile}"
+    logger.info "Launching #{browser.capitalize}"
 
     # When launching browser, select the profile to use, tweak profile settings to facilitate file downloads, and launch in headless mode if desired.
     driver = case browser
 
       when 'chrome'
-        options = Selenium::WebDriver::Chrome::Options.new
-        if @config['webdriver']['chrome_profile']
-          profile_dir = (profile ? profile : File.join(@config_dir, 'chrome-profile'))
-          options.add_argument("user-data-dir=#{profile_dir}")
-        end
-
+        options = Selenium::WebDriver::Chrome::Options.new binary: driver_config['chrome_binary_path']
         options.add_argument('--headless=new') if headless?
         options.add_preference('download.prompt_for_download', false)
         options.add_preference('download.default_directory', Utils.download_dir)
@@ -100,14 +95,6 @@ class Utils
 
   def self.set_reduced_window_size(driver)
     driver.manage.window.resize_to(500, 700)
-  end
-
-  def self.use_optional_chrome_profile?
-    @config['webdriver']['chrome_optional_profile']
-  end
-
-  def self.optional_chrome_profile_dir
-    File.join(@config_dir, 'chrome-profile-optional')
   end
 
   def self.headless?

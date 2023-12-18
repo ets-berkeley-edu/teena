@@ -11,7 +11,7 @@ GEM
     pg (1.4.5)
     racc (1.6.2)
     rake (13.0.6)
-    rexml (3.2.5)
+    rexml (3.2.6)
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -26,11 +26,11 @@ GEM
       rspec-support (~> 3.12.0)
     rspec-support (3.12.0)
     rubyzip (2.3.2)
-    selenium-webdriver (4.8.0)
+    selenium-webdriver (4.16.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    websocket (1.2.9)
+    websocket (1.2.10)
 
 PLATFORMS
   ruby
@@ -42,7 +42,7 @@ DEPENDENCIES
   pg (= 1.4.5)
   rake (= 13.0.6)
   rspec (= 3.12.0)
-  selenium-webdriver (= 4.8.0)
+  selenium-webdriver (= 4.16.0)
 
 BUNDLED WITH
    2.4.6
